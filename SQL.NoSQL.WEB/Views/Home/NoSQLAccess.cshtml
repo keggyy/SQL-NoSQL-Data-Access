@@ -1,0 +1,46 @@
+﻿
+@model SQL.NoSQL.WEB.Models.LogListModel
+@{
+    ViewBag.Title = "NOSQLAccess";
+}
+
+<h2>Accesso Database MongoDB</h2>
+
+<br />
+
+
+<table>
+    <tr>
+        <th>
+            Livello
+        </th>
+        <th>
+            Data
+        </th>
+        <th>
+            Applicazione
+        </th>
+        <th>
+            Messaggio
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Logs)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.App.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+        </tr>
+    }
+
+</table>
