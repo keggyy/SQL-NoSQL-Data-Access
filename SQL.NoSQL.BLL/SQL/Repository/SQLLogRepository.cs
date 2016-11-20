@@ -5,8 +5,6 @@ using SQL.NoSQL.Library.SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SQL.NoSQL.BLL.SQL.Repository
 {
@@ -59,6 +57,21 @@ namespace SQL.NoSQL.BLL.SQL.Repository
                 op.SaveOrUpdate(entity);
                 op.Commit();
 
+            }
+        }
+
+        public List<LogDto> Search(Guid? SelectedApp, string TextToSearch)
+        {
+            using (UnitOfNhibernate op = new UnitOfNhibernate())
+            {
+                op.BeginTransaction();
+                IEnumerable<SQLLogEntity> query = op.Query<SQLLogEntity>();
+                if (!string.IsNullOrEmpty(TextToSearch))
+                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                if (SelectedApp != null)
+                    query = query.Where(x => x.AppId.Equals(SelectedApp));
+                List<SQLLogEntity> entity = query.ToList();
+                return ConvertEntityListToDtoList(entity);
             }
         }
 

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace SQL.NoSQL.Library.Interfaces
 {
-    public abstract class IRepository<T> where T: IDTOBase
+    public interface IRepository { }
+    public abstract class IRepository<T>:IRepository where T: IDTOBase
     {
         public abstract T GetById(Guid Id);
         public abstract List<T> GetAll();

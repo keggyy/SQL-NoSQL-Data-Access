@@ -1,85 +1,94 @@
 ﻿using SQL.NoSQL.BLL.Common.DTO;
-using SQL.NoSQL.BLL.NoSQL.DAL.Entity;
+using SQL.NoSQL.BLL.MixedAcces.DAL.Entity;
 using SQL.NoSQL.Library.Interfaces;
-using SQL.NoSQL.Library.NoSQL;
+using SQL.NoSQL.Library.Mixed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SQL.NoSQL.BLL.NoSQL.Repository
+namespace SQL.NoSQL.BLL.MixedAcces.Repository
 {
-    public class NoSQLLogRepository : IRepository<LogDto>
+    public class LogRepository : IRepository<LogDto>
     {
+        private static UnitFactory _UnitFactory;
+
+        public LogRepository()
+        {
+            _UnitFactory = new UnitFactory();
+        }
         public override void Delete(LogDto dto)
         {
-            using (UnitOfMongo op = new UnitOfMongo())
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
-                NoSQLLogEntity entity = op.Query<NoSQLLogEntity>().Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
+                op.BeginTransaction();
+                LogEntity entity = op.Query<LogEntity>().Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
                 if (entity != null)
                     op.Delete(entity);
+                op.Commit();
             }
         }
 
         public override List<LogDto> GetAll()
         {
-            using (UnitOfMongo op = new UnitOfMongo())
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
-                List<NoSQLLogEntity> entity = op.Query<NoSQLLogEntity>().ToList();
+                op.BeginTransaction();
+                List<LogEntity> entity = op.Query<LogEntity>().ToList();
                 return ConvertEntityListToDtoList(entity);
             }
         }
 
         public override LogDto GetById(Guid Id)
         {
-            using (UnitOfMongo op = new UnitOfMongo())
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
-                NoSQLLogEntity entity = op.Query<NoSQLLogEntity>().Where(x => x.Id.Equals(Id)).FirstOrDefault();
+                op.BeginTransaction();
+                LogEntity entity = op.Query<LogEntity>().Where(x => x.Id.Equals(Id)).FirstOrDefault();
                 return ConvertEntityToDto(entity);
             }
         }
 
         public override void Save(LogDto dto)
         {
-            using (UnitOfMongo op = new UnitOfMongo())
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
-                NoSQLLogEntity entity = op.Query<NoSQLLogEntity>().Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
+                op.BeginTransaction();
+                LogEntity entity = op.Query<LogEntity>().Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
                 if (entity == null)
-                    entity = new NoSQLLogEntity();
+                    entity = new LogEntity();
                 entity.AppId = dto.App.Id;
-                entity.AppName = dto.App.Name;
                 entity.Level = dto.Level;
                 entity.LogDate = dto.LogDate;
                 entity.Message = dto.Message;
                 op.SaveOrUpdate(entity);
+                op.Commit();
 
             }
         }
 
         public List<LogDto> Search(Guid? SelectedApp, string TextToSearch)
         {
-            using (UnitOfMongo op = new UnitOfMongo())
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
                 op.BeginTransaction();
-                IQueryable<NoSQLLogEntity> query = op.Query<NoSQLLogEntity>();
+                IQueryable<LogEntity> query = op.Query<LogEntity>();
                 if (!string.IsNullOrEmpty(TextToSearch))
                     query = query.Where(x => x.Message.Contains(TextToSearch));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
-                List<NoSQLLogEntity> entity = query.ToList();
+                List<LogEntity> entity = query.ToList();
                 return ConvertEntityListToDtoList(entity);
             }
         }
 
         #region Entity to Dto
-        internal static LogDto ConvertEntityToDto(NoSQLLogEntity entity)
+        internal static LogDto ConvertEntityToDto(LogEntity entity)
         {
             LogDto result = new LogDto();
             if (entity != null)
             {
                 result.Id = entity.Id;
-                result.App = new AppDto { Id = entity.AppId, Name = entity.AppName };
+                result.App = (new AppRepository().GetById(entity.AppId));
                 result.Level = entity.Level;
                 result.LogDate = entity.LogDate;
                 result.Message = entity.Message;
@@ -87,12 +96,12 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
             return result;
         }
 
-        internal static List<LogDto> ConvertEntityListToDtoList(List<NoSQLLogEntity> entity)
+        internal static List<LogDto> ConvertEntityListToDtoList(List<LogEntity> entity)
         {
             List<LogDto> result = new List<LogDto>();
             if (entity != null && entity.Count > 0)
             {
-                foreach (NoSQLLogEntity en in entity)
+                foreach (LogEntity en in entity)
                 {
                     result.Add(ConvertEntityToDto(en));
                 }

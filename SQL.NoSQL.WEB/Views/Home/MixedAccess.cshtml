@@ -1,12 +1,12 @@
 ﻿
 @model SQL.NoSQL.WEB.Models.LogListModel
 @{
-    ViewBag.Title = "SQLAccess";
+    ViewBag.Title = "MixedAccess";
 }
 
-<h2>Accesso Database SQL Server</h2>
+<h2>Accesso Database Misto</h2>
 
-<br/>
+<br />
 
 @using (Html.BeginForm("SQLAccess", "Home", FormMethod.Get))
 {
@@ -16,13 +16,20 @@
         Application:
         @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.App,
                                "Id", "Name",
-                               Model.SelectedApp))
+                               new { @class = "form-control" }))
         Search: @Html.TextBox("TextToSearch", Model.TextToSearch)
         <input type="submit" value="Search" class="btn btn-default" />
     </p>
 }
 
 <br />
+
+<style>
+    .table-striped > tbody > tr:nth-child(odd) > td,
+    .table-striped > tbody > tr:nth-child(odd) > th {
+        background-color: rgba(136,70,70,0.18);
+    }
+</style>
 
 <table class="table table-striped">
     <thead>
@@ -61,4 +68,3 @@
         }
     </tbody>
 </table>
-

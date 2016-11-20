@@ -63,6 +63,12 @@
     <Compile Include="Common\DTO\AppDto.cs" />
     <Compile Include="Common\DTO\LogDto.cs" />
     <Compile Include="Common\Helper\DataHelper.cs" />
+    <Compile Include="MixedAcces\DAL\Entity\AppEntity.cs" />
+    <Compile Include="MixedAcces\DAL\Entity\LogEntity.cs" />
+    <Compile Include="MixedAcces\DAL\Mapping\AppMap.cs" />
+    <Compile Include="MixedAcces\DAL\Mapping\LogMap.cs" />
+    <Compile Include="MixedAcces\Repository\AppRepository.cs" />
+    <Compile Include="MixedAcces\Repository\LogRepository.cs" />
     <Compile Include="NoSQL\DAL\Entity\NoSQLLogEntity.cs" />
     <Compile Include="NoSQL\Repository\NoSQLAppRepository.cs" />
     <Compile Include="NoSQL\Repository\NoSQLLogRepository.cs" />
@@ -77,9 +83,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MixedAcces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SQL.NoSQL.Library\SQL.NoSQL.Library.csproj">
       <Project>{2e8977ce-eb5a-4321-9716-e1d4f4055c0d}</Project>

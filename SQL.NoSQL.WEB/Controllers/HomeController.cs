@@ -1,4 +1,5 @@
 ﻿using SQL.NoSQL.BLL.Common.DTO;
+using SQL.NoSQL.BLL.MixedAcces.Repository;
 using SQL.NoSQL.BLL.NoSQL.Repository;
 using SQL.NoSQL.BLL.SQL.Repository;
 using SQL.NoSQL.WEB.Models;
@@ -17,20 +18,29 @@ namespace SQL.NoSQL.WEB.Controllers
             return View();
         }
 
-        public ActionResult SQLAccess()
+        public ActionResult SQLAccess(Guid? SelectedApp,string TextToSearch)
         {
             LogListModel model = new LogListModel();
             model.App.AddRange((new SQLAppRepository()).GetAll().OrderBy(x => x.Name));
-            model.Logs.AddRange((new SQLLogRepository().GetAll().OrderBy(x => x.LogDate)));
+            model.Logs.AddRange((new SQLLogRepository().Search(SelectedApp,TextToSearch).OrderBy(x => x.LogDate)));
 
             return View(model);
         }
 
-        public ActionResult NoSQLAccess()
+        public ActionResult NoSQLAccess(Guid? SelectedApp, string TextToSearch)
         {
             LogListModel model = new LogListModel();
             model.App.AddRange((new NoSQLAppRepository()).GetAll().OrderBy(x => x.Name));
-            model.Logs.AddRange((new NoSQLLogRepository().GetAll().OrderBy(x => x.LogDate)));
+            model.Logs.AddRange((new NoSQLLogRepository().Search(SelectedApp, TextToSearch).OrderBy(x => x.LogDate)));
+
+            return View(model);
+        }
+
+        public ActionResult MixedAccess(Guid? SelectedApp, string TextToSearch)
+        {
+            LogListModel model = new LogListModel();
+            model.App.AddRange((new AppRepository()).GetAll().OrderBy(x => x.Name));
+            model.Logs.AddRange((new LogRepository().Search(SelectedApp, TextToSearch).OrderBy(x => x.LogDate)));
 
             return View(model);
         }

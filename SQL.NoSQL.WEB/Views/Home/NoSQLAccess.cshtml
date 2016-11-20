@@ -8,39 +8,63 @@
 
 <br />
 
+@using (Html.BeginForm("SQLAccess", "Home", FormMethod.Get))
+{
 
-<table>
-    <tr>
-        <th>
-            Livello
-        </th>
-        <th>
-            Data
-        </th>
-        <th>
-            Applicazione
-        </th>
-        <th>
-            Messaggio
-        </th>
-    </tr>
 
-    @foreach (var item in Model.Logs)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Level)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LogDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.App.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-        </tr>
+    <p>
+        Application:
+        @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.App,
+                               "Id", "Name",
+                               Model.SelectedApp))
+        Search: @Html.TextBox("TextToSearch", Model.TextToSearch)
+        <input type="submit" value="Search" class="btn btn-default" />
+    </p>
+}
+
+<br />
+
+<style>
+    .table-striped > tbody > tr:nth-child(odd) > td,
+    .table-striped > tbody > tr:nth-child(odd) > th {
+        background-color: rgba(70,110,140,0.18);
     }
+</style>
 
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Livello
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Applicazione
+            </th>
+            <th>
+                Messaggio
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Logs)
+        {
+            <tr>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.App.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

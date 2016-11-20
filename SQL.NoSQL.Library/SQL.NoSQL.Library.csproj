@@ -61,13 +61,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\Repository.cs" />
-    <Compile Include="Config\RepositoryCollection.cs" />
-    <Compile Include="Config\RepositoryConfiguration.cs" />
+    <Compile Include="Config\Mongo\MongoDBCollection.cs" />
+    <Compile Include="Config\Mongo\MongoDBConfiguration.cs" />
+    <Compile Include="Config\Mongo\Property.cs" />
+    <Compile Include="Config\Repository\Repository.cs" />
+    <Compile Include="Config\Repository\RepositoryCollection.cs" />
+    <Compile Include="Config\Repository\RepositoryConfiguration.cs" />
     <Compile Include="Interfaces\IDTOBase.cs" />
     <Compile Include="Interfaces\IEntityBase.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Mixed\UnitFactory.cs" />
     <Compile Include="NoSQL\MongoContext.cs" />
     <Compile Include="NoSQL\UnitOfMongo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,7 +81,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

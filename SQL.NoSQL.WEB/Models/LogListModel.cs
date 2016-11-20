@@ -10,6 +10,8 @@ namespace SQL.NoSQL.WEB.Models
     {
         public List<AppDto> App { get; set; }
         public List<LogDto> Logs { get; set; }
+        public System.Nullable<Guid> SelectedApp { get; set; }
+        public string TextToSearch { get; set; }
 
         public LogListModel()
         {

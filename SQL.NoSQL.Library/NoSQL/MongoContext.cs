@@ -1,22 +1,18 @@
 ﻿using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
+using SQL.NoSQL.Library.Config;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SQL.NoSQL.Library.NoSQL
 {
     internal class MongoContext
     {
         private MongoClient _mongoClient;
-        public IMongoDatabase DataBase { get { return this._mongoClient.GetDatabase(ConfigurationManager.AppSettings["MongoDbNAme"]); } }
+        public IMongoDatabase DataBase { get { return this._mongoClient.GetDatabase(MongoDBConfiguration.GetConfig().MongoDBCollection["CollectionName"].Value); } }
         private static MongoContext CreateNewContext()
         {
 
             MongoContext ctx = new MongoContext();
-            ctx._mongoClient = new MongoClient(ConfigurationManager.ConnectionStrings["Mongodb"].ConnectionString);
+            ctx._mongoClient = new MongoClient(MongoDBConfiguration.GetConfig().MongoDBCollection["Connection"].Value);
             return ctx;
         }
 
