@@ -1,0 +1,36 @@
+﻿@using SQL.NoSQL.WEB.Models
+@model LogsReportModel
+
+    <br />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Applicazione
+                </th>
+                <th>
+                    Livello
+                </th>
+                <th>
+                    N° Logs
+                </th>>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.AppName)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Level)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

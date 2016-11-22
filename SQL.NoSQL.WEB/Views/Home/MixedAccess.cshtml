@@ -1,35 +1,47 @@
 ﻿
-@model SQL.NoSQL.WEB.Models.LogListModel
+@using PagedList.Mvc
+@using SQL.NoSQL.WEB.Models
+@model LogListModel
+
 @{
-    ViewBag.Title = "MixedAccess";
+    ViewBag.Title = "SQL-NoSQL Acces Data";
+    LogsReportModel report = ViewData["LogReport"] as LogsReportModel;
 }
+
 
 <h2>Accesso Database Misto</h2>
 
 <br />
 
-@using (Html.BeginForm("SQLAccess", "Home", FormMethod.Get))
+@using (Html.BeginForm("MixedAccess", "Home", FormMethod.Get))
 {
 
 
     <p>
-        Application:
-        @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.App,
+        <div class="form-group row">
+            <label for="App" class="col-sm-2">Applicazione:</label>
+            <div class="col-sm-8">
+                @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.App,
                                "Id", "Name",
-                               new { @class = "form-control" }))
-        Search: @Html.TextBox("TextToSearch", Model.TextToSearch)
-        <input type="submit" value="Search" class="btn btn-default" />
+                               Model.SelectedApp))
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="TextToSearch" class="col-sm-2">Search:</label>
+            <div class="col-sm-8">
+                @Html.TextBox("TextToSearch", Model.TextToSearch, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-8">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+
     </p>
 }
 
 <br />
-
-<style>
-    .table-striped > tbody > tr:nth-child(odd) > td,
-    .table-striped > tbody > tr:nth-child(odd) > th {
-        background-color: rgba(136,70,70,0.18);
-    }
-</style>
 
 <table class="table table-striped">
     <thead>
@@ -68,3 +80,33 @@
         }
     </tbody>
 </table>
+
+<br />
+        Page @(Model.Logs.PageCount < Model.Logs.PageNumber ? 0 : Model.Logs.PageNumber) of @Model.Logs.PageCount
+
+        @Html.PagedListPager(Model.Logs, page => Url.Action("MixedAccess",
+    new { Model.SelectedApp, page, TextToSearch = Model.TextToSearch }))
+
+        <br />
+        <div class="form-group row">
+            <label for="PaginationTime" class="col-sm-2">Tempo Paginazione (ms):</label>
+            <div class="col-sm-8">
+                @Html.DisplayFor(modelItem => modelItem.PaginationTime)
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-8">
+                <input id="reportBtn" type="submit" value="Open Report" class="btn btn-warning" />
+            </div>
+        </div>
+
+        <div id="report"></div>
+        <script type="text/javascript">
+    var url = '@Url.Action("MixedReport", "Home")';
+    $('#reportBtn').click(function () {
+        $('#report').load(url);
+    })
+        </script>

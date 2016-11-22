@@ -1,12 +1,11 @@
-﻿using SQL.NoSQL.BLL.Common.DTO;
+﻿using PagedList;
+using SQL.NoSQL.BLL.Common.DTO;
 using SQL.NoSQL.BLL.NoSQL.DAL.Entity;
 using SQL.NoSQL.Library.Interfaces;
 using SQL.NoSQL.Library.NoSQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SQL.NoSQL.BLL.NoSQL.Repository
 {
@@ -57,18 +56,47 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
             }
         }
 
-        public List<LogDto> Search(Guid? SelectedApp, string TextToSearch)
+        public IPagedList<LogDto> Search(Guid? SelectedApp, string TextToSearch,int PageNum, int SizePage)
         {
             using (UnitOfMongo op = new UnitOfMongo())
             {
-                op.BeginTransaction();
                 IQueryable<NoSQLLogEntity> query = op.Query<NoSQLLogEntity>();
                 if (!string.IsNullOrEmpty(TextToSearch))
                     query = query.Where(x => x.Message.Contains(TextToSearch));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
+
+                query = query.Skip((PageNum - 1) * SizePage);
+                query = query.Take(SizePage);
                 List<NoSQLLogEntity> entity = query.ToList();
-                return ConvertEntityListToDtoList(entity);
+                List<LogDto> dto = ConvertEntityListToDtoList(entity);
+
+                return new StaticPagedList<LogDto>(dto.AsEnumerable<LogDto>(), PageNum, SizePage, CountLogs(SelectedApp, TextToSearch));
+            }
+        }
+
+        public List<LogReportDto> GetLogsReport()
+        {
+            List<LogReportDto> result = new List<LogReportDto>();
+            using (UnitOfMongo op = new UnitOfMongo())
+            {
+                List<AppDto> apps = (new NoSQLAppRepository()).GetAll();
+                result = op.Query<NoSQLLogEntity>().GroupBy(x => new { x.AppId,x.AppName, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId,AppName = y.Key.AppName, Level = y.Key.Level, Count = y.Count() }).ToList();
+            }
+            return result;
+        }
+
+        private int CountLogs(Guid? SelectedApp, string TextToSearch)
+        {
+            using (UnitOfMongo op = new UnitOfMongo())
+            {
+                op.BeginTransaction();
+                IEnumerable<NoSQLLogEntity> query = op.Query<NoSQLLogEntity>();
+                if (!string.IsNullOrEmpty(TextToSearch))
+                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                if (SelectedApp != null)
+                    query = query.Where(x => x.AppId.Equals(SelectedApp));
+                return query.Count();
             }
         }
 

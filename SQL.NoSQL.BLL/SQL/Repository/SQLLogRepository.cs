@@ -1,4 +1,5 @@
-﻿using SQL.NoSQL.BLL.Common.DTO;
+﻿using PagedList;
+using SQL.NoSQL.BLL.Common.DTO;
 using SQL.NoSQL.BLL.SQL.DAL.Entity;
 using SQL.NoSQL.Library.Interfaces;
 using SQL.NoSQL.Library.SQL;
@@ -60,7 +61,7 @@ namespace SQL.NoSQL.BLL.SQL.Repository
             }
         }
 
-        public List<LogDto> Search(Guid? SelectedApp, string TextToSearch)
+        public IPagedList<LogDto> Search(Guid? SelectedApp, string TextToSearch, int PageNum, int SizePage)
         {
             using (UnitOfNhibernate op = new UnitOfNhibernate())
             {
@@ -70,8 +71,39 @@ namespace SQL.NoSQL.BLL.SQL.Repository
                     query = query.Where(x => x.Message.Contains(TextToSearch));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
+                query = query.Skip((PageNum - 1) * SizePage);
+                query = query.Take(SizePage);
                 List<SQLLogEntity> entity = query.ToList();
-                return ConvertEntityListToDtoList(entity);
+                List<LogDto> dto = ConvertEntityListToDtoList(entity);
+
+                return new StaticPagedList<LogDto>(dto.AsEnumerable<LogDto>(), PageNum, SizePage, CountLogs(SelectedApp,TextToSearch));
+            }
+        }
+
+        public List<LogReportDto> GetLogsReport()
+        {
+            List<LogReportDto> result = new List<LogReportDto>();
+            using (UnitOfNhibernate op = new UnitOfNhibernate())
+            {
+                op.BeginTransaction();
+                List<AppDto> apps = (new SQLAppRepository()).GetAll();
+                //result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).Join(apps, s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
+                result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).ToList();//.Join(op.Query<SQLAppEntity>(), s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
+            }
+            return result;
+        }
+
+        private int CountLogs(Guid? SelectedApp, string TextToSearch)
+        {
+            using (UnitOfNhibernate op = new UnitOfNhibernate())
+            {
+                op.BeginTransaction();
+                IEnumerable<SQLLogEntity> query = op.Query<SQLLogEntity>();
+                if (!string.IsNullOrEmpty(TextToSearch))
+                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                if (SelectedApp != null)
+                    query = query.Where(x => x.AppId.Equals(SelectedApp));
+                return query.Count();
             }
         }
 

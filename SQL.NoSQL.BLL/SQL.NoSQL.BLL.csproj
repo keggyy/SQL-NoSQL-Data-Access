@@ -50,6 +50,14 @@
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Common\DTO\AppDto.cs" />
     <Compile Include="Common\DTO\LogDto.cs" />
+    <Compile Include="Common\DTO\LogReportDto.cs" />
     <Compile Include="Common\Helper\DataHelper.cs" />
     <Compile Include="MixedAcces\DAL\Entity\AppEntity.cs" />
     <Compile Include="MixedAcces\DAL\Entity\LogEntity.cs" />
@@ -83,7 +92,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\PagedList.css" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQL.NoSQL.Library\SQL.NoSQL.Library.csproj">
       <Project>{2e8977ce-eb5a-4321-9716-e1d4f4055c0d}</Project>
