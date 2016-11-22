@@ -1,0 +1,112 @@
+﻿@using SQL.NoSQL.WEB.Models
+@model UpdateAppModel
+@{
+    ViewBag.Title = "UpdateApplication";
+}
+
+<h2>Aggiornamento Applicazione</h2>
+
+
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Applicazione
+            </th>
+            <th>
+                Update SQL
+            </th>
+            <th>
+                Update NoSQL
+            </th>
+            <th>
+                Update SQL-NoSQL
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td scope="row">
+                    @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.Apps,
+                               "Id", "Name",
+                               Model.SelectedApp))
+                </td>
+                <td>
+                    <button id="SQLUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update SQL"></button>
+                </td>
+                <td>
+                    <button id="NoSQLUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update NoSQL"></button>
+                </td>
+                <td>
+                    <button id="MixedUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update Mixed"></button>
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <div id="SQLUpdate"></div>
+    </div>
+    <div class="col-sm-4">
+        <div id="NoSQLUpdate"></div>
+    </div>
+    <div class="col-sm-4">
+        <div id="MixedUpdate"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $('#SQLUpdateBtn').click(function () {
+        var app = $('select#SelectedApp').val()
+        //$('#SQLUpdate').load(SQLUrl, { SelectedApp: app });
+        var data = { SelectedApp: app };
+        $.ajax({
+            type: "GET",
+            url: '/Home/SQLUpdateApp',
+            data: data,
+            success: function (resultData) {
+                // take the result data and update the div
+                $("#SQLUpdate").append(resultData);
+            }
+        });
+    });
+
+    $('#NoSQLUpdateBtn').click(function () {
+        var app = $('select#SelectedApp').val()
+        //$('#SQLUpdate').load(SQLUrl, { SelectedApp: app });
+        var data = { SelectedApp: app };
+        $.ajax({
+            type: "GET",
+            url: '/Home/NoSQLUpdateApp',
+            data: data,
+            success: function (resultData) {
+                // take the result data and update the div
+                $("#NoSQLUpdate").append(resultData);
+            }
+        });
+    });
+
+    $('#MixedUpdateBtn').click(function () {
+        var app = $('select#SelectedApp').val()
+        //$('#SQLUpdate').load(SQLUrl, { SelectedApp: app });
+        var data = { SelectedApp: app };
+        $.ajax({
+            type: "GET",
+            url: '/Home/MixedUpdateApp',
+            data: data,
+            success: function (resultData) {
+                // take the result data and update the div
+                $("#MixedUpdate").append(resultData);
+            }
+        });
+    });
+</script>
+
+
+

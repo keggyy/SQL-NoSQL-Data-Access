@@ -132,8 +132,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppModel.cs" />
     <Compile Include="Models\LogListModel.cs" />
     <Compile Include="Models\LogsReportModel.cs" />
+    <Compile Include="Models\UpdateAppModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +181,10 @@
     <Content Include="Views\Home\SQLReport.cshtml" />
     <Content Include="Views\Home\NoSQLReport.cshtml" />
     <Content Include="Views\Home\MixedReport.cshtml" />
+    <Content Include="Views\Home\UpdateApplication.cshtml" />
+    <Content Include="Views\Home\SQLUpdateApp.cshtml" />
+    <Content Include="Views\Home\NoSQLUpdateApp.cshtml" />
+    <Content Include="Views\Home\MixedUpdateApp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

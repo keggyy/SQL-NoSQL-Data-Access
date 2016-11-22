@@ -45,7 +45,18 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
 
         public override void Save(AppDto dto)
         {
-            //in questo contesto non ha senzo il salvataggio di un APP dato che è una proprietà intrinseca del log
+            using (UnitOfMongo op = new UnitOfMongo())
+            {
+                List<NoSQLLogEntity> logs = op.Query<NoSQLLogEntity>().Where(x => x.AppId.Equals(dto.Id)).ToList();
+                if(logs!= null && logs.Count> 0)
+                {
+                    foreach(NoSQLLogEntity entity in logs)
+                    {
+                        entity.AppName = dto.Name;
+                        op.SaveOrUpdate(entity);
+                    }
+                }
+            }
         }
     }
 }

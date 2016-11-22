@@ -44,27 +44,26 @@ namespace SQL.NoSQL.WEB.Controllers
             return PartialView(result);
         }
 
-        public ActionResult NoSQLReport()
+        [HttpGet]
+        public ActionResult SQLUpdateApp(Guid SelectedApp)
         {
-            Stopwatch pageTime = new Stopwatch();
-            pageTime.Start();
-            LogsReportModel result = new LogsReportModel();
-            result.Items.AddRange((new NoSQLLogRepository()).GetLogsReport());
-            result.TimeReport = pageTime.ElapsedMilliseconds;
-            return PartialView(result);
+            AppModel model = new AppModel();
+            model.SelecteAppMoldel = (new SQLAppRepository()).GetById(SelectedApp);
+            return PartialView(model);
         }
 
-        public ActionResult MixedReport()
+        [HttpPost]
+        public ActionResult SQLUpdateApp(AppModel model)
         {
-            Stopwatch pageTime = new Stopwatch();
-            pageTime.Start();
-            LogsReportModel result = new LogsReportModel();
-            result.Items.AddRange((new LogRepository()).GetLogsReport());
-            result.TimeReport = pageTime.ElapsedMilliseconds;
-            return PartialView(result);
+            Stopwatch updateTime = new Stopwatch();
+            updateTime.Start();
+            (new SQLAppRepository()).Save(model.SelecteAppMoldel);
+            updateTime.Stop();
+            model.TimeUpdateApp = updateTime.ElapsedMilliseconds;
+            return PartialView(model);
         }
 
-        public ActionResult NoSQLAccess(Guid? SelectedApp, string TextToSearch,int? page)
+        public ActionResult NoSQLAccess(Guid? SelectedApp, string TextToSearch, int? page)
         {
             Stopwatch pageTime = new Stopwatch();
             pageTime.Start();
@@ -77,6 +76,35 @@ namespace SQL.NoSQL.WEB.Controllers
             return View(model);
         }
 
+        public ActionResult NoSQLReport()
+        {
+            Stopwatch pageTime = new Stopwatch();
+            pageTime.Start();
+            LogsReportModel result = new LogsReportModel();
+            result.Items.AddRange((new NoSQLLogRepository()).GetLogsReport());
+            result.TimeReport = pageTime.ElapsedMilliseconds;
+            return PartialView(result);
+        }
+
+        [HttpGet]
+        public ActionResult NoSQLUpdateApp(Guid SelectedApp)
+        {
+            AppModel model = new AppModel();
+            model.SelecteAppMoldel = (new NoSQLAppRepository()).GetById(SelectedApp);
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult NoSQLUpdateApp(AppModel model)
+        {
+            Stopwatch updateTime = new Stopwatch();
+            updateTime.Start();
+            (new NoSQLAppRepository()).Save(model.SelecteAppMoldel);
+            updateTime.Stop();
+            model.TimeUpdateApp = updateTime.ElapsedMilliseconds;
+            return PartialView(model);
+        }
+
         public ActionResult MixedAccess(Guid? SelectedApp, string TextToSearch, int? page)
         {
             Stopwatch pageTime = new Stopwatch();
@@ -87,6 +115,42 @@ namespace SQL.NoSQL.WEB.Controllers
             pageTime.Stop();
             model.PaginationTime = pageTime.ElapsedMilliseconds;
 
+            return View(model);
+        }
+
+        public ActionResult MixedReport()
+        {
+            Stopwatch pageTime = new Stopwatch();
+            pageTime.Start();
+            LogsReportModel result = new LogsReportModel();
+            result.Items.AddRange((new LogRepository()).GetLogsReport());
+            result.TimeReport = pageTime.ElapsedMilliseconds;
+            return PartialView(result);
+        }
+
+        [HttpGet]
+        public ActionResult MixedUpdateApp(Guid SelectedApp)
+        {
+            AppModel model = new AppModel();
+            model.SelecteAppMoldel = (new AppRepository()).GetById(SelectedApp);
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult MixedUpdateApp(AppModel model)
+        {
+            Stopwatch updateTime = new Stopwatch();
+            updateTime.Start();
+            (new AppRepository()).Save(model.SelecteAppMoldel);
+            updateTime.Stop();
+            model.TimeUpdateApp = updateTime.ElapsedMilliseconds;
+            return PartialView(model);
+        }
+
+        public ActionResult UpdateApplication()
+        {
+            UpdateAppModel model = new UpdateAppModel();
+            model.Apps = new AppRepository().GetAll();
             return View(model);
         }
     }
