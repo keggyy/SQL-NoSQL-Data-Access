@@ -9,3 +9,25 @@
 <a class="btn btn-success" href="/api/excel/NoSQLReport">NOSQL</a><br />
 <a class="btn btn-success" href="/api/excel/MixedReport">MixedSQL</a>
 
+
+<div id="logs"></div>
+
+<script type="text/javascript">
+        $(function () {
+            // Declare a proxy to reference the hub.
+            var chat = $.connection.exportPerformanceLog;
+            // Create a function that the hub can call to broadcast messages.
+            chat.client.broadcastMessage = function (name, message) {
+                // Html encode display name and message.
+            
+                // Add the message to the page.
+                $('#logs').append('<li><strong>' + name
+                    + '</strong>:&nbsp;&nbsp;' + message + '</li>');
+            };
+           
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+                $('#logs').append("started");
+            });
+        });
+</script>

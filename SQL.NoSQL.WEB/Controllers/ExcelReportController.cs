@@ -6,6 +6,7 @@ using SQL.NoSQL.BLL.NoSQL.Repository;
 using SQL.NoSQL.BLL.SQL.Repository;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,24 @@ using System.Web.Routing;
 
 namespace SQL.NoSQL.WEB.Controllers
 {
+
+    public class MeasuredMethod : IDisposable
+    {
+        private string name;
+        private Stopwatch timer;
+        public MeasuredMethod(string name)
+        {
+            this.name = name;
+            timer = new Stopwatch();
+            timer.Start();
+        }
+        public void Dispose()
+        {
+            timer.Stop();
+            ExportPerformanceLog.Send(name,timer.ElapsedMilliseconds+ " ms");
+        }
+    }
+
     [RoutePrefix("api/Excel")]
     public class ExcelReportController : ApiController
     {
@@ -24,57 +43,75 @@ namespace SQL.NoSQL.WEB.Controllers
         [Route("SQLReport")]
         public HttpResponseMessage SQLReport()
         {
-
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            SQLAppRepository appRepo = new SQLAppRepository();
-            SQLLogRepository logRepo = new SQLLogRepository();
-            List<AppDto> apps = appRepo.GetAll();
-            foreach (AppDto app in apps)
+            HttpResponseMessage data;
+            using (MeasuredMethod m = new MeasuredMethod("SQLReport"))
             {
-                ISheet worksheet = workbook.CreateSheet(app.Name);
-                List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
-                BuildExcel(ref worksheet, logs);
-            }
 
-            return SendExcel(workbook, "SQLReport.xlsx");
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                SQLAppRepository appRepo = new SQLAppRepository();
+                SQLLogRepository logRepo = new SQLLogRepository();
+                List<AppDto> apps = appRepo.GetAll();
+                foreach (AppDto app in apps)
+                {
+                    ISheet worksheet = workbook.CreateSheet(app.Name);
+                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
+                    BuildExcel(ref worksheet, logs);
+                }
+
+                data= SendExcel(workbook, "SQLReport.xlsx");
+            }
+            return data;
         }
 
         [HttpGet]
         [Route("NoSQLReport")]
         public HttpResponseMessage NoSQLReport()
         {
-
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            NoSQLAppRepository appRepo = new NoSQLAppRepository();
-            NoSQLLogRepository logRepo = new NoSQLLogRepository();
-            List<AppDto> apps = appRepo.GetAll();
-            foreach (AppDto app in apps)
+            HttpResponseMessage data;
+            using (MeasuredMethod m = new MeasuredMethod("NoSQLReport"))
             {
-                ISheet worksheet = workbook.CreateSheet(app.Name);
-                List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
-                BuildExcel(ref worksheet, logs);
-            }
 
-            return SendExcel(workbook, "NoSQLReport.xlsx");
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                NoSQLAppRepository appRepo = new NoSQLAppRepository();
+                NoSQLLogRepository logRepo = new NoSQLLogRepository();
+                List<AppDto> apps = appRepo.GetAll();
+                foreach (AppDto app in apps)
+                {
+                    ISheet worksheet = workbook.CreateSheet(app.Name);
+                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
+                    BuildExcel(ref worksheet, logs);
+                }
+
+
+
+                 data = SendExcel(workbook, "NoSQLReport.xlsx");
+
+            }
+            return data;
         }
 
         [HttpGet]
         [Route("MixedReport")]
         public HttpResponseMessage MixedReport()
         {
-
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            AppRepository appRepo = new AppRepository();
-            LogRepository logRepo = new LogRepository();
-            List<AppDto> apps = appRepo.GetAll();
-            foreach (AppDto app in apps)
+            HttpResponseMessage data;
+            using (MeasuredMethod m = new MeasuredMethod("MixedReport"))
             {
-                ISheet worksheet = workbook.CreateSheet(app.Name);
-                List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
-                BuildExcel(ref worksheet, logs);
-            }
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                AppRepository appRepo = new AppRepository();
+                LogRepository logRepo = new LogRepository();
+                List<AppDto> apps = appRepo.GetAll();
+                foreach (AppDto app in apps)
+                {
+                    ISheet worksheet = workbook.CreateSheet(app.Name);
+                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
+                    BuildExcel(ref worksheet, logs);
+                }
 
-            return SendExcel(workbook, "MixedReport.xlsx");
+
+                data= SendExcel(workbook, "MixedReport.xlsx");
+            }
+            return data;
         }
 
         private static void BuildExcel(ref ISheet worksheet, List<LogDto> logs)
