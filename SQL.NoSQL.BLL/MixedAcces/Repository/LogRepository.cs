@@ -74,7 +74,7 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
                 op.BeginTransaction();
                 IQueryable<LogEntity> query = op.Query<LogEntity>();
                 if (!string.IsNullOrEmpty(TextToSearch))
-                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                    query = query.Where(x => x.Message.ToLower().Contains(TextToSearch.ToLower()));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
 
@@ -83,7 +83,7 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
                 List<LogEntity> entity = query.ToList();
                 List<LogDto> dto = ConvertEntityListToDtoList(entity);
 
-                return dto.AsEnumerable<LogDto>().ToPagedList<LogDto>(PageNum, SizePage);
+                return new StaticPagedList<LogDto>(dto.AsEnumerable<LogDto>(), PageNum, SizePage, CountLogs(SelectedApp, TextToSearch));
             }
         }
 
@@ -96,6 +96,17 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
                 List<AppDto> apps = (new AppRepository()).GetAll();
                 //result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).Join(apps, s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
                 result = op.Query<LogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).ToList();//.Join(op.Query<SQLAppEntity>(), s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
+            }
+            return result;
+        }
+
+        public List<LogDto> GetLogsByAppId(Guid AppId)
+        {
+            List<LogDto> result = new List<LogDto>();
+            using (IUnitOfWork op = _UnitFactory.GetUnit(this))
+            {
+                op.BeginTransaction();
+                result = ConvertEntityListToDtoList(op.Query<LogEntity>().Where(x => x.AppId.Equals(AppId)).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }

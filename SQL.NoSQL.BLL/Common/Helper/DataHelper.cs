@@ -4,7 +4,9 @@ using SQL.NoSQL.BLL.NoSQL.Repository;
 using SQL.NoSQL.BLL.SQL.Repository;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +17,65 @@ namespace SQL.NoSQL.BLL.Common.Helper
     /// </summary>
     public static class DataHelper
     {
+
+        public static void EnsureData()
+        {
+            SQLAppRepository appRep = new SQLAppRepository();
+            SQLLogRepository SQLlogRep = new SQLLogRepository();
+            NoSQLLogRepository NoSQLlogRep = new NoSQLLogRepository();
+            LogRepository MixedlogRep = new LogRepository();
+
+            List<AppDto> apps = appRep.GetAll();
+            if(apps == null || apps.Count == 0)
+            {
+                appRep.Save(new AppDto { Name = "Applicazione 1" });
+                appRep.Save(new AppDto { Name = "Applicazione 2" });
+                appRep.Save(new AppDto { Name = "Applicazione 3" });
+                appRep.Save(new AppDto { Name = "Applicazione 4" });
+                appRep.Save(new AppDto { Name = "Applicazione 5" });
+
+                AppDto app1 = appRep.GetByName("Applicazione 1");
+                AppDto app2 = appRep.GetByName("Applicazione 2");
+                AppDto app3 = appRep.GetByName("Applicazione 3");
+                AppDto app4 = appRep.GetByName("Applicazione 4");
+                AppDto app5 = appRep.GetByName("Applicazione 5");
+
+                List<AppDto> listApp = appRep.GetAll();
+                
+                List<string> levelList = new List<string>();
+                levelList.Add("Info");
+                levelList.Add("Error");
+                levelList.Add("Warn");
+                levelList.Add("Debug");
+
+                DateTime start = new DateTime(1995, 1, 1);
+                
+                int range = (DateTime.Today - start).Days;
+
+                Random rand = new Random();
+                Random randLevel = new Random();
+                Random randDate = new Random();
+                using (StreamReader sr = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin\\la_divin.txt"), Encoding.GetEncoding(1252)))
+                {
+
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        AppDto app = listApp[rand.Next(0, listApp.Count - 1)];
+                        string level = levelList[randLevel.Next(0, levelList.Count - 1)];
+                        DateTime date = start.AddDays(randDate.Next(0, range)).AddHours(randDate.Next(0, range)).AddMilliseconds(randDate.Next(0, range)).AddMinutes(randDate.Next(0, range)).AddSeconds(randDate.Next(0, range));
+                        SQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+                        NoSQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+                        MixedlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+
+
+                    }
+                }
+                
+
+
+            }
+        }
         public static void EnsureNHibernateData()
         {
             SQLAppRepository appRep = new SQLAppRepository();

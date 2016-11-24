@@ -19,7 +19,7 @@ namespace SQL.NoSQL.Library.SQL
             Configuration cfg = new Configuration();
 
             ModelMapper mapper = new ModelMapper();
-            
+
             mapper.AddMappings(Assembly.Load("SQL.NoSQL.BLL").GetExportedTypes());
 
             HbmMapping domainMapping =

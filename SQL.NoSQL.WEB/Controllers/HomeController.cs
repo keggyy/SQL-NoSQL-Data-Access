@@ -153,5 +153,12 @@ namespace SQL.NoSQL.WEB.Controllers
             model.Apps = new AppRepository().GetAll();
             return View(model);
         }
+
+        public ActionResult Report()
+        {
+            return View();
+        }
+
+         
     }
 }

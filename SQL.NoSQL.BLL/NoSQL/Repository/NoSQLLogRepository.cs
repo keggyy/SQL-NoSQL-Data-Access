@@ -62,7 +62,7 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
             {
                 IQueryable<NoSQLLogEntity> query = op.Query<NoSQLLogEntity>();
                 if (!string.IsNullOrEmpty(TextToSearch))
-                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                    query = query.Where(x => x.Message.ToLower().Contains(TextToSearch.ToLower()));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
 
@@ -82,6 +82,16 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
             {
                 List<AppDto> apps = (new NoSQLAppRepository()).GetAll();
                 result = op.Query<NoSQLLogEntity>().GroupBy(x => new { x.AppId,x.AppName, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId,AppName = y.Key.AppName, Level = y.Key.Level, Count = y.Count() }).ToList();
+            }
+            return result;
+        }
+
+        public List<LogDto> GetLogsByAppId(Guid AppId)
+        {
+            List<LogDto> result = new List<LogDto>();
+            using (UnitOfMongo op = new UnitOfMongo())
+            {
+                result = ConvertEntityListToDtoList(op.Query<NoSQLLogEntity>().Where(x => x.AppId.Equals(AppId)).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }

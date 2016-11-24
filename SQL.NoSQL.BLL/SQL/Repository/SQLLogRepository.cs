@@ -68,7 +68,7 @@ namespace SQL.NoSQL.BLL.SQL.Repository
                 op.BeginTransaction();
                 IEnumerable<SQLLogEntity> query = op.Query<SQLLogEntity>();
                 if (!string.IsNullOrEmpty(TextToSearch))
-                    query = query.Where(x => x.Message.Contains(TextToSearch));
+                    query = query.Where(x => x.Message.ToLower().Contains(TextToSearch.ToLower()));
                 if (SelectedApp != null)
                     query = query.Where(x => x.AppId.Equals(SelectedApp));
                 query = query.Skip((PageNum - 1) * SizePage);
@@ -89,6 +89,17 @@ namespace SQL.NoSQL.BLL.SQL.Repository
                 List<AppDto> apps = (new SQLAppRepository()).GetAll();
                 //result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).Join(apps, s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
                 result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).ToList();//.Join(op.Query<SQLAppEntity>(), s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
+            }
+            return result;
+        }
+
+        public List<LogDto> GetLogsByAppId(Guid AppId)
+        {
+            List<LogDto> result = new List<LogDto>();
+            using (UnitOfNhibernate op = new UnitOfNhibernate())
+            {
+                op.BeginTransaction();
+                result = ConvertEntityListToDtoList(op.Query<SQLLogEntity>().Where(x => x.AppId.Equals(AppId)).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }
