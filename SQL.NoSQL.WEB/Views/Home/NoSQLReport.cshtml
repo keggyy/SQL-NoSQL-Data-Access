@@ -1,7 +1,7 @@
 ﻿@using SQL.NoSQL.WEB.Models
 @model LogsReportModel
 
-<br />
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -13,7 +13,7 @@
             </th>
             <th>
                 N° Logs
-            </th>>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -37,8 +37,8 @@
 
 <br />
 <div class="form-group row">
-    <label for="PaginationTime" class="col-sm-3">Tempo Report (ms):</label>
-    <div class="col-sm-7">
-        @Html.DisplayFor(modelItem => modelItem.TimeReport)
+    <label for="PaginationTime" class="col-sm-2">Tempo Report:</label>
+    <div class="col-sm-8">
+        @Html.DisplayFor(modelItem => modelItem.TimeReport) ms
     </div>
 </div>

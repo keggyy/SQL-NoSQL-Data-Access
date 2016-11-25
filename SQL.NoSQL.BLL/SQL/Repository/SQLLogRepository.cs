@@ -99,7 +99,7 @@ namespace SQL.NoSQL.BLL.SQL.Repository
             using (UnitOfNhibernate op = new UnitOfNhibernate())
             {
                 op.BeginTransaction();
-                List<SQLLogEntity>  entity = op.Query<SQLLogEntity>().Where(x => x.App.Id.Equals(AppId)).Take(50000).ToList();
+                List<SQLLogEntity>  entity = op.Query<SQLLogEntity>().Where(x => x.App.Id.Equals(AppId)).Take(10000).ToList();
                 result =  ConvertEntityListToDtoList(entity);
             }
             return result;

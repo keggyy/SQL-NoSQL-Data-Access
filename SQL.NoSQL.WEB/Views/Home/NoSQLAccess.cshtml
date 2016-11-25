@@ -23,7 +23,7 @@
             <div class="col-sm-8">
                 @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.App,
                                "Id", "Name",
-                               Model.SelectedApp))
+                               Model.SelectedApp), new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group row">
@@ -89,9 +89,9 @@
 
         <br />
         <div class="form-group row">
-            <label for="PaginationTime" class="col-sm-2">Tempo Paginazione (ms):</label>
+            <label for="PaginationTime" class="col-sm-2">Tempo Paginazione:</label>
             <div class="col-sm-8">
-                @Html.DisplayFor(modelItem => modelItem.PaginationTime)
+                @Html.DisplayFor(modelItem => modelItem.PaginationTime) ms
             </div>
         </div>
 
@@ -104,6 +104,7 @@
         </div>
 
         <div id="report"></div>
+
  <script type="text/javascript">
     var url = '@Url.Action("NoSQLReport", "Home")';
             $('#reportBtn').click(function () {

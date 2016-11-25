@@ -31,16 +31,18 @@
                 <td scope="row">
                     @Html.DropDownListFor(m => m.SelectedApp, new SelectList(Model.Apps,
                                "Id", "Name",
-                               Model.SelectedApp))
+                               Model.SelectedApp),new { @class = "form-control" })
                 </td>
-                <td>
-                    <button id="SQLUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update SQL"></button>
+                <td  style="padding-left:26px">
+                    <div style="align-items:center;">
+                        <button id="SQLUpdateBtn" type="button" class="btn glyphicon glyphicon-pencil" alt="Update SQL"></button>
+                    </div>
                 </td>
-                <td>
-                    <button id="NoSQLUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update NoSQL"></button>
+                <td style="padding-left:38px">
+                    <button id="NoSQLUpdateBtn" type="button" class="btn glyphicon glyphicon-pencil" alt="Update NoSQL" ></button>
                 </td>
-                <td>
-                    <button id="MixedUpdateBtn" type="button" class="glyphicon glyphicon-pencil" alt="Update Mixed"></button>
+                <td style="padding-left:65px">
+                    <button id="MixedUpdateBtn" type="button" class="btn glyphicon glyphicon-pencil" alt="Update Mixed" ></button>
                 </td>
             </tr>
     </tbody>

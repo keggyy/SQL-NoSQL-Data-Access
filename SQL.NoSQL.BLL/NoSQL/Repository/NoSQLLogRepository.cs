@@ -91,7 +91,7 @@ namespace SQL.NoSQL.BLL.NoSQL.Repository
             List<LogDto> result = new List<LogDto>();
             using (UnitOfMongo op = new UnitOfMongo())
             {
-                result = ConvertEntityListToDtoList(op.Query<NoSQLLogEntity>().Where(x => x.AppId.Equals(AppId)).Take(50000).OrderBy(x => x.LogDate).ToList());
+                result = ConvertEntityListToDtoList(op.Query<NoSQLLogEntity>().Where(x => x.AppId.Equals(AppId)).Take(10000).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }

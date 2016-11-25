@@ -106,7 +106,7 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
             using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
                 op.BeginTransaction();
-                result = ConvertEntityListToDtoList(op.Query<LogEntity>().Where(x => x.AppId.Equals(AppId)).Take(50000).OrderBy(x => x.LogDate).ToList());
+                result = ConvertEntityListToDtoList(op.Query<LogEntity>().Where(x => x.AppId.Equals(AppId)).Take(10000).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }

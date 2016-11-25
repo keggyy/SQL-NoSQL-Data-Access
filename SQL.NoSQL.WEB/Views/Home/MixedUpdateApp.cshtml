@@ -15,16 +15,22 @@
     <label for="SelecteAppMoldel" class="col-sm-2">Applicazione:</label>
 </div>
 <div class="form-group row">
-    @Html.TextBoxFor(model => model.SelecteAppMoldel.Name, new { @class = "form-control" })
+    <div class="col-sm-6">
+        @Html.TextBoxFor(modelItem => modelItem.SelecteAppMoldel.Name, new { @class = "form-control" })
+    </div>
 </div>
-
-<input id="UppdateAppBtn" type="submit" value="Update" class="btn btn-warning" />
 
 
 <div class="form-group row">
-    <label for="TimeUpdateApp" class="col-sm-2">Tempo (ms):</label>
-    <div class="col-sm-2">
-        @Html.DisplayFor(modelItem => modelItem.TimeUpdateApp)
+    <div class="col-sm-6">
+        <input id="UppdateAppBtn" type="submit" value="Update" class="btn btn-warning" />
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="TimeUpdateApp" class="col-sm-2">Tempo:</label>
+    <div class="col-sm-4">
+        @Html.DisplayFor(modelItem => modelItem.TimeUpdateApp) ms
     </div>
 </div>
 
