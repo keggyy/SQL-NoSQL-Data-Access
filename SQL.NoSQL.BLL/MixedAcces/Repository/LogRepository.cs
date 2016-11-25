@@ -93,9 +93,8 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
             using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
                 op.BeginTransaction();
-                List<AppDto> apps = (new AppRepository()).GetAll();
                 List<LogEntity> entity= op.Query<LogEntity>().ToList();
-                result = entity.Join(apps.AsEnumerable(), x => x.AppId, y => y.Id, (x, y) => new { x, y }).GroupBy(z => new { z.x.AppId, z.y.Name, z.x.Level }).Select(k => new LogReportDto { Id = k.Key.AppId, Level = k.Key.Level, AppName = k.Key.Name, Count = k.Count() }).ToList();
+                result = entity.Join(op.Query<AppEntity>().AsEnumerable(), x => x.AppId, y => y.Id, (x, y) => new { x, y }).GroupBy(z => new { z.x.AppId, z.y.Name, z.x.Level }).Select(k => new LogReportDto { Id = k.Key.AppId, Level = k.Key.Level, AppName = k.Key.Name, Count = k.Count() }).ToList();
             }
             return result;
         }
