@@ -3,14 +3,51 @@
     ViewBag.Title = "Report";
 }
 
-<h2>Report</h2>
+<style type="text/css">
+    .custom{
+        margin-bottom:15px;
+        margin-top:15px;
+    };
+</style>
 
-<a class="btn btn-success" href="/api/excel/SQLReport">SQL</a><br />
-<a class="btn btn-success" href="/api/excel/NoSQLReport">NOSQL</a><br />
-<a class="btn btn-success" href="/api/excel/MixedReport">MixedSQL</a>
+<h2>Export Excel</h2>
 
 
-<div id="logs"></div>
+<div class="row">
+    <div class="col-sm-4">
+        <b>Export SQL</b>
+    </div>
+    <div class="col-sm-4">
+        <b>Export NoSQL</b>
+    </div>
+    <div class="col-sm-4">
+        <b>Export SQL-NOSQL</b>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4 custom">
+        <a class="btn btn-success" href="/api/excel/SQLReport">SQL</a>
+    </div>
+    <div class="col-sm-4 custom">
+        <a class="btn btn-success" href="/api/excel/NoSQLReport">NOSQL</a>
+    </div>
+    <div class="col-sm-4 custom">
+        <a class="btn btn-success" href="/api/excel/MixedReport">MixedSQL</a>
+    </div>
+</div>
+
+<div class="row">
+     <div class="col-sm-4 custom">
+         <div id="logsSQLReport"></div>
+     </div>
+    <div class="col-sm-4 custom">
+        <div id="logsNoSQLReport"></div>
+    </div>
+    <div class="col-sm-4custom">
+        <div id="logsMixedReport"></div>
+    </div>
+</div>
 
 <script type="text/javascript">
         $(function () {
@@ -21,13 +58,11 @@
                 // Html encode display name and message.
             
                 // Add the message to the page.
-                $('#logs').append('<li><strong>' + name
-                    + '</strong>:&nbsp;&nbsp;' + message + '</li>');
+                $('#logs' + name).append('<li><strong>Time: </strong>:&nbsp;&nbsp;' + message + '</li>');
             };
            
             // Start the connection.
             $.connection.hub.start().done(function () {
-                $('#logs').append("started");
             });
         });
 </script>

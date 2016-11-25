@@ -18,7 +18,7 @@ namespace SQL.NoSQL.BLL.SQL.Repository
                 SQLAppEntity entity = op.Query<SQLAppEntity>().Where(x => x.Id.Equals(dto.Id)).FirstOrDefault();
                 if (entity != null)
                 {
-                    List<SQLLogEntity> logList = op.Query<SQLLogEntity>().Where(x => x.AppId.Equals(entity.Id)).ToList();
+                    List<SQLLogEntity> logList = op.Query<SQLLogEntity>().Where(x => x.App.Id.Equals(entity.Id)).ToList();
                     if (logList != null && logList.Count > 0)
                     {
                         foreach (SQLLogEntity log in logList)

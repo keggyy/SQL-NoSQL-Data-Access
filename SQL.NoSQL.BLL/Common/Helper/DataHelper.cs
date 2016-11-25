@@ -1,7 +1,9 @@
 ﻿using SQL.NoSQL.BLL.Common.DTO;
+using SQL.NoSQL.BLL.MixedAcces.DAL.Entity;
 using SQL.NoSQL.BLL.MixedAcces.Repository;
 using SQL.NoSQL.BLL.NoSQL.Repository;
 using SQL.NoSQL.BLL.SQL.Repository;
+using SQL.NoSQL.Library.SQL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,18 +59,30 @@ namespace SQL.NoSQL.BLL.Common.Helper
                 Random randDate = new Random();
                 using (StreamReader sr = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin\\la_divin.txt"), Encoding.GetEncoding(1252)))
                 {
-
-                    while (!sr.EndOfStream)
+                    using (UnitOfNhibernate op = new UnitOfNhibernate())
                     {
-                        string line = sr.ReadLine();
-                        AppDto app = listApp[rand.Next(0, listApp.Count - 1)];
-                        string level = levelList[randLevel.Next(0, levelList.Count - 1)];
-                        DateTime date = start.AddDays(randDate.Next(0, range)).AddHours(randDate.Next(0, range)).AddMilliseconds(randDate.Next(0, range)).AddMinutes(randDate.Next(0, range)).AddSeconds(randDate.Next(0, range));
-                        SQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
-                        NoSQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
-                        MixedlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+                        op.BeginTransaction();
+                        int i = 0;
+                        while (!sr.EndOfStream)
+                        {
+                            i++;
+                            string line = sr.ReadLine();
+                            AppDto app = listApp[rand.Next(0, listApp.Count - 1)];
+                            string level = levelList[randLevel.Next(0, levelList.Count - 1)];
+                            DateTime date = start.AddDays(randDate.Next(0, range)).AddHours(randDate.Next(0, range)).AddMilliseconds(randDate.Next(0, range)).AddMinutes(randDate.Next(0, range)).AddSeconds(randDate.Next(0, range));
+
+                            LogEntity entity = new LogEntity { AppId = app.Id, Level = level, Message = line, LogDate = date };
+                            op.SaveOrUpdate(entity);
+                            if (i % 100000 == 0)
+                                op.Commit();
+                            //SQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+                            NoSQLlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
+                            MixedlogRep.Save(new LogDto { App = app, Level = level, Message = line, LogDate = date });
 
 
+                        }
+
+                        op.Commit();
                     }
                 }
                 

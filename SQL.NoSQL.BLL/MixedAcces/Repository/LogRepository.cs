@@ -94,8 +94,8 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
             {
                 op.BeginTransaction();
                 List<AppDto> apps = (new AppRepository()).GetAll();
-                //result = op.Query<SQLLogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).Join(apps, s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
-                result = op.Query<LogEntity>().GroupBy(x => new { x.AppId, x.Level }).Select(y => new LogReportDto { Id = y.Key.AppId, Level = y.Key.Level, Count = y.Count() }).ToList();//.Join(op.Query<SQLAppEntity>(), s => s.Id, t => t.Id, (s, t) => new LogReportDto { AppName = t.Name, Count = s.Count, Id = s.Id, Level = s.Level }).ToList();
+                List<LogEntity> entity= op.Query<LogEntity>().ToList();
+                result = entity.Join(apps.AsEnumerable(), x => x.AppId, y => y.Id, (x, y) => new { x, y }).GroupBy(z => new { z.x.AppId, z.y.Name, z.x.Level }).Select(k => new LogReportDto { Id = k.Key.AppId, Level = k.Key.Level, AppName = k.Key.Name, Count = k.Count() }).ToList();
             }
             return result;
         }
@@ -106,7 +106,7 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
             using (IUnitOfWork op = _UnitFactory.GetUnit(this))
             {
                 op.BeginTransaction();
-                result = ConvertEntityListToDtoList(op.Query<LogEntity>().Where(x => x.AppId.Equals(AppId)).OrderBy(x => x.LogDate).ToList());
+                result = ConvertEntityListToDtoList(op.Query<LogEntity>().Where(x => x.AppId.Equals(AppId)).Take(50000).OrderBy(x => x.LogDate).ToList());
             }
             return result;
         }
@@ -133,7 +133,7 @@ namespace SQL.NoSQL.BLL.MixedAcces.Repository
             if (entity != null)
             {
                 result.Id = entity.Id;
-                result.App = (new AppRepository().GetById(entity.AppId));
+                result.App = new AppDto { Id = entity.AppId };
                 result.Level = entity.Level;
                 result.LogDate = entity.LogDate;
                 result.Message = entity.Message;

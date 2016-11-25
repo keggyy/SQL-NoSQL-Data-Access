@@ -1,0 +1,72 @@
+2016-11-24 23:39:50.9425 INFO: NHibernate 4.0.4.GA (assembly 4.0.0.4000)  
+2016-11-24 23:39:50.9885 INFO: Bytecode provider name : lcg  
+2016-11-24 23:39:50.9885 INFO: Using reflection optimizer  
+2016-11-24 23:39:51.1649 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:51.2780 INFO: Mapping class: SQL.NoSQL.BLL.SQL.DAL.Entity.SQLAppEntity -> App  
+2016-11-24 23:39:51.3871 INFO: Mapping class: SQL.NoSQL.BLL.SQL.DAL.Entity.SQLLogEntity -> Log  
+2016-11-24 23:39:51.3941 INFO: Mapping class: SQL.NoSQL.BLL.MixedAcces.DAL.Entity.AppEntity -> App  
+2016-11-24 23:39:51.3941 INFO: Mapping class: SQL.NoSQL.BLL.MixedAcces.DAL.Entity.LogEntity -> Log  
+2016-11-24 23:39:51.4161 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:51.4226 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:51.4226 INFO: Configuring ConnectionProvider  
+2016-11-24 23:39:51.4861 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:51.4861 INFO: Running hbm2ddl schema update  
+2016-11-24 23:39:51.5002 INFO: fetching database metadata  
+2016-11-24 23:39:51.5002 INFO: Configuring ConnectionProvider  
+2016-11-24 23:39:51.7735 INFO: updating schema  
+2016-11-24 23:39:51.7936 INFO: checking mappings queue  
+2016-11-24 23:39:51.8051 INFO: processing one-to-many association mappings  
+2016-11-24 23:39:51.8136 INFO: processing one-to-one association property references  
+2016-11-24 23:39:51.8481 INFO: processing foreign key constraints  
+2016-11-24 23:39:51.8591 INFO: processing filters (second pass)  
+2016-11-24 23:39:52.0557 INFO: table found: Evento26DB.dbo.App  
+2016-11-24 23:39:52.0613 INFO: columns: id, name  
+2016-11-24 23:39:52.0613 INFO: foreign keys:   
+2016-11-24 23:39:52.0613 INFO: indexes: pk__app__3214ec07bd2db3b8  
+2016-11-24 23:39:52.0938 INFO: table found: Evento26DB.dbo.Log  
+2016-11-24 23:39:52.0938 INFO: columns: id, appid, message, level, logdate  
+2016-11-24 23:39:52.0938 INFO: foreign keys:   
+2016-11-24 23:39:52.1189 INFO: indexes: pk__log__3214ec07b42c1bd8  
+2016-11-24 23:39:52.1369 INFO: schema update complete  
+2016-11-24 23:39:52.1559 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:52.1559 INFO: Mapping class: SQL.NoSQL.BLL.SQL.DAL.Entity.SQLAppEntity -> App  
+2016-11-24 23:39:52.1559 INFO: Mapping class: SQL.NoSQL.BLL.SQL.DAL.Entity.SQLLogEntity -> Log  
+2016-11-24 23:39:52.1759 INFO: Mapping class: SQL.NoSQL.BLL.MixedAcces.DAL.Entity.AppEntity -> App  
+2016-11-24 23:39:52.1759 INFO: Mapping class: SQL.NoSQL.BLL.MixedAcces.DAL.Entity.LogEntity -> Log  
+2016-11-24 23:39:52.1910 INFO: checking mappings queue  
+2016-11-24 23:39:52.1910 INFO: processing one-to-many association mappings  
+2016-11-24 23:39:52.2090 INFO: processing one-to-one association property references  
+2016-11-24 23:39:52.2360 INFO: processing foreign key constraints  
+2016-11-24 23:39:52.2480 INFO: processing filters (second pass)  
+2016-11-24 23:39:52.2875 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:52.3035 INFO: Using dialect: NHibernate.Dialect.MsSql2012Dialect  
+2016-11-24 23:39:52.3721 INFO: Using dialect defined converter  
+2016-11-24 23:39:52.3721 INFO: Generate SQL with comments: disabled  
+2016-11-24 23:39:52.3721 INFO: Configuring ConnectionProvider  
+2016-11-24 23:39:52.3881 INFO: Transaction factory: NHibernate.Transaction.AdoNetWithDistributedTransactionFactory  
+2016-11-24 23:39:52.3881 INFO: Optimize cache for minimal puts: False  
+2016-11-24 23:39:52.4096 INFO: Connection release mode: on_close  
+2016-11-24 23:39:52.4096 INFO: Default batch fetch size: 1  
+2016-11-24 23:39:52.4246 INFO: echoing all SQL to stdout  
+2016-11-24 23:39:52.4246 INFO: Statistics: disabled  
+2016-11-24 23:39:52.4391 INFO: Deleted entity synthetic identifier rollback: disabled  
+2016-11-24 23:39:52.4534 INFO: Query translator: NHibernate.Hql.Ast.ANTLR.ASTQueryTranslatorFactory  
+2016-11-24 23:39:52.4534 INFO: Query language substitutions: {'true'='1', 'false'='0', 'yes'=''Y'', 'no'=''N''}  
+2016-11-24 23:39:52.4694 INFO: cache provider: NHibernate.Cache.NoCacheProvider, NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4  
+2016-11-24 23:39:52.4694 INFO: Order SQL inserts for batching: enabled  
+2016-11-24 23:39:52.4694 INFO: Batcher factory: NHibernate.AdoNet.SqlClientBatchingBatcherFactory, NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4  
+2016-11-24 23:39:52.4875 INFO: Default entity-mode: Poco  
+2016-11-24 23:39:52.4875 INFO: Named query checking : enabled  
+2016-11-24 23:39:52.4974 INFO: Ignoring exceptions in BeforeTransactionCompletion : disabled  
+2016-11-24 23:39:52.5185 INFO: building session factory  
+2016-11-24 23:39:52.7616 INFO: no name configured  
+2016-11-24 23:39:53.3365 INFO: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_  
+2016-11-24 23:39:53.3475 DEBUG: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_  
+2016-11-24 23:40:22.4453 INFO: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_  
+2016-11-24 23:40:22.4508 DEBUG: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_  
+2016-11-24 23:40:29.5453 INFO: handling property dereference [SQL.NoSQL.BLL.SQL.DAL.Entity.SQLLogEntity (x) -> AppId (Class)]  
+2016-11-24 23:40:29.5978 INFO: select sqllogenti0_.Id as Id3_, sqllogenti0_.Message as Message3_, sqllogenti0_.Level as Level3_, sqllogenti0_.LogDate as LogDate3_, sqllogenti0_.AppId as AppId3_ from dbo.Log sqllogenti0_ where sqllogenti0_.AppId=@p0  
+2016-11-24 23:40:29.5978 DEBUG: select sqllogenti0_.Id as Id3_, sqllogenti0_.Message as Message3_, sqllogenti0_.Level as Level3_, sqllogenti0_.LogDate as LogDate3_, sqllogenti0_.AppId as AppId3_ from dbo.Log sqllogenti0_ where sqllogenti0_.AppId=@p0;@p0 = 9104b8f5-f679-4b26-94c6-03bef06d4540 [Type: Guid (0)]  
+2016-11-24 23:41:51.4974 INFO: handling property dereference [SQL.NoSQL.BLL.SQL.DAL.Entity.SQLAppEntity (x) -> Id (Class)]  
+2016-11-24 23:41:51.5219 INFO: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_ where sqlappenti0_.Id=@p0 ORDER BY CURRENT_TIMESTAMP OFFSET 0 ROWS FETCH FIRST 1 ROWS ONLY  
+2016-11-24 23:41:51.5219 DEBUG: select sqlappenti0_.Id as Id2_, sqlappenti0_.Name as Name2_ from dbo.App sqlappenti0_ where sqlappenti0_.Id=@p0 ORDER BY CURRENT_TIMESTAMP OFFSET 0 ROWS FETCH FIRST 1 ROWS ONLY;@p0 = 9104b8f5-f679-4b26-94c6-03bef06d4540 [Type: Guid (0)]  

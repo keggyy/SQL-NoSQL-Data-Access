@@ -8,6 +8,6 @@ namespace SQL.NoSQL.BLL.SQL.DAL.Entity
         public virtual string Message { get; set; }
         public virtual string Level { get; set; }
         public virtual DateTime LogDate { get; set; }
-        public virtual Guid AppId { get; set; }
+        public virtual SQLAppEntity App { get; set; }
     }
 }

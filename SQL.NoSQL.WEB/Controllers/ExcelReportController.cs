@@ -78,7 +78,7 @@ namespace SQL.NoSQL.WEB.Controllers
                 foreach (AppDto app in apps)
                 {
                     ISheet worksheet = workbook.CreateSheet(app.Name);
-                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
+                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id).Take(10000).ToList();
                     BuildExcel(ref worksheet, logs);
                 }
 
@@ -104,7 +104,7 @@ namespace SQL.NoSQL.WEB.Controllers
                 foreach (AppDto app in apps)
                 {
                     ISheet worksheet = workbook.CreateSheet(app.Name);
-                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id);
+                    List<LogDto> logs = logRepo.GetLogsByAppId(app.Id).Take(10000).ToList();
                     BuildExcel(ref worksheet, logs);
                 }
 

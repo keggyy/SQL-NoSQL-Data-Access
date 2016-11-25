@@ -50,6 +50,10 @@
       <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -72,6 +76,8 @@
     <Compile Include="Common\DTO\LogDto.cs" />
     <Compile Include="Common\DTO\LogReportDto.cs" />
     <Compile Include="Common\Helper\DataHelper.cs" />
+    <Compile Include="Common\SQLAppender.cs" />
+    <Compile Include="Common\SQLDialettic.cs" />
     <Compile Include="MixedAcces\DAL\Entity\AppEntity.cs" />
     <Compile Include="MixedAcces\DAL\Entity\LogEntity.cs" />
     <Compile Include="MixedAcces\DAL\Mapping\AppMap.cs" />
